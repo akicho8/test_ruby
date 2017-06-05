@@ -12,14 +12,25 @@ class TestString < Test::Unit::TestCase
       assert_equal(10041, ObjectSpace.memsize_of(String.new(capacity: 10000)))
     end
   end
+
+  test "sprintf" do
+    assert_equal("0b001010", "%#08b" % 10) # 0b も含めて8桁
+
+    assert_equal("+1", "%+d" % 1) # 符号の幅を考慮したいときはこのようにしがちだけど
+    assert_equal(" 1", "% d" % 1) # "+" は表示したくない場合はスペースが便利
+
+    assert_equal("01", "%.2s" % "012") # 「切り捨て」
+
+    assert_equal("{:a=>1}", "%p" % {a: 1}) # inspect
+  end
 end
 # >> Loaded suite -
 # >> Started
-# >> ..
+# >> ...
 # >> 
-# >> Finished in 0.001196 seconds.
+# >> Finished in 0.001303 seconds.
 # >> ------
-# >> 2 tests, 3 assertions, 0 failures, 0 errors, 0 pendings, 0 omissions, 0 notifications
+# >> 3 tests, 8 assertions, 0 failures, 0 errors, 0 pendings, 0 omissions, 0 notifications
 # >> 100% passed
 # >> ------
-# >> 1672.24 tests/s, 2508.36 assertions/s
+# >> 2302.38 tests/s, 6139.68 assertions/s
