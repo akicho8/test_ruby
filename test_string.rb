@@ -1,5 +1,6 @@
 require "test/unit"
 
+# https://docs.ruby-lang.org/ja/2.4.0/class/String.html
 class TestString < Test::Unit::TestCase
   sub_test_case "class_methods" do
     test "new" do
@@ -29,25 +30,40 @@ class TestString < Test::Unit::TestCase
     assert_equal("0b001010", "%#08b" % 10)       # 「#」は「0b や 0x」がつく。それを含めて8桁
 
     assert_equal("+1", "%+d" % 1)                # 符号の幅を考慮したいときはこのようにしがちだけど
-    assert_equal(" 1", "% d" % 1)                # "+" は表示したくない場合はスペースが便利
+    assert_equal(" 1", "% d" % 1)                # "+" は表示したくない場合はスペースが便利★
 
     assert_equal("01", "%.2s" % "012")           # truncate的なことが可能
 
-    assert_equal("{:a=>0}", "%p" % {a: 0})       # inspect
+    assert_equal("{:a=>0}", "%p" % {a: 0})       # inspect ★
 
                                                  # 引数を上手に選択する方法
-    assert_equal("b a", "%2$s %1$s" % [:a, :b])  # 2$ で2番目
+    assert_equal("b a", "%2$s %1$s" % [:a, :b])  # 2$ で2番目★
     assert_equal("ap", "%{foo}p" % {foo: :a})    # キーワード指定
-    assert_equal(":a", "%<foo>p" % {foo: :a})    # キーワード指定(書式の影響あり)
+    assert_equal(":a", "%<foo>p" % {foo: :a})    # キーワード指定(書式の影響あり)★
+  end
+
+  test "*" do
+    assert_equal("aaa", "a" * 3)
+  end
+
+  test "+" do
+    assert_equal("ab", "a" + "b")
+  end
+
+  test "sign +" do
+    a = ""
+    a.freeze
+    assert_equal(true, a.frozen?)
+    assert_equal(false, (+a).frozen?) # +a で freeze が外れる★
   end
 end
 # >> Loaded suite -
 # >> Started
-# >> ...
+# >> ......
 # >> 
-# >> Finished in 0.001294 seconds.
+# >> Finished in 0.001601 seconds.
 # >> ------
-# >> 3 tests, 18 assertions, 0 failures, 0 errors, 0 pendings, 0 omissions, 0 notifications
+# >> 6 tests, 22 assertions, 0 failures, 0 errors, 0 pendings, 0 omissions, 0 notifications
 # >> 100% passed
 # >> ------
-# >> 2318.39 tests/s, 13910.36 assertions/s
+# >> 3747.66 tests/s, 13741.41 assertions/s
