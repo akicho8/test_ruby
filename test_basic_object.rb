@@ -1,7 +1,6 @@
-# https://docs.ruby-lang.org/ja/2.4.0/class/BasicObject.html
-
 require "test/unit"
 
+# https://docs.ruby-lang.org/ja/2.4.0/class/BasicObject.html
 class TestBasicObject < Test::Unit::TestCase
   test "ancestors" do
     assert_equal([BasicObject], BasicObject.ancestors) # 親は自分
