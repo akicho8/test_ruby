@@ -50,20 +50,28 @@ class TestString < Test::Unit::TestCase
     assert_equal("ab", "a" + "b")
   end
 
-  test "sign +" do
+  test "+符号で非破壊的な解凍" do # そもそも破壊的な解凍ってあるの？
     a = ""
     a.freeze
     assert_equal(true, a.frozen?)
     assert_equal(false, (+a).frozen?) # +a で freeze が外れる★
+    assert_equal(true, a.frozen?)
+  end
+
+  test "-符号で非破壊的な冷凍" do
+    a = ""
+    assert_equal(false, a.frozen?)
+    assert_equal(true, (-a).frozen?) # -a で freeze する★
+    assert_equal(false, a.frozen?)   # 元は破壊されていないことがわかる
   end
 end
 # >> Loaded suite -
 # >> Started
-# >> ......
+# >> .......
 # >> 
-# >> Finished in 0.001601 seconds.
+# >> Finished in 0.001797 seconds.
 # >> ------
-# >> 6 tests, 22 assertions, 0 failures, 0 errors, 0 pendings, 0 omissions, 0 notifications
+# >> 7 tests, 26 assertions, 0 failures, 0 errors, 0 pendings, 0 omissions, 0 notifications
 # >> 100% passed
 # >> ------
-# >> 3747.66 tests/s, 13741.41 assertions/s
+# >> 3895.38 tests/s, 14468.56 assertions/s
