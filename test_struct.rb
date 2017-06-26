@@ -3,6 +3,10 @@ require "test/unit"
 # https://docs.ruby-lang.org/ja/2.4.0/class/Struct.html
 class TesStruct < Test::Unit::TestCase
   sub_test_case "class_methods" do
+    test "ancestors" do
+      assert_equal([Struct, Enumerable, Object, Kernel, BasicObject], Struct.ancestors)
+    end
+
     test "new" do
       assert_equal("Struct::Foo", Struct.new("Foo", :x).name) # Struct の下にできる
       assert_nil(Struct.new(:x).name) # 昔は "" だったが nil になった★
@@ -20,7 +24,7 @@ class TesStruct < Test::Unit::TestCase
   end
 
   test "[]" do
-    assert_equal("#<struct x=1>", Struct.new(:x)[1].inspect)
+    assert_equal("#<struct x=:a>", Struct.new(:x)[:a].inspect)
   end
 
   test "members" do
@@ -65,11 +69,11 @@ class TesStruct < Test::Unit::TestCase
 end
 # >> Loaded suite -
 # >> Started
-# >> ...
+# >> ....
 # >> 
-# >> Finished in 0.001101 seconds.
+# >> Finished in 0.001191 seconds.
 # >> ------
-# >> 3 tests, 8 assertions, 0 failures, 0 errors, 0 pendings, 0 omissions, 0 notifications
+# >> 4 tests, 9 assertions, 0 failures, 0 errors, 0 pendings, 0 omissions, 0 notifications
 # >> 100% passed
 # >> ------
-# >> 2724.80 tests/s, 7266.12 assertions/s
+# >> 3358.52 tests/s, 7556.68 assertions/s

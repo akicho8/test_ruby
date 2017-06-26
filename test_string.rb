@@ -3,6 +3,10 @@ require "test/unit"
 # https://docs.ruby-lang.org/ja/2.4.0/class/String.html
 class TestString < Test::Unit::TestCase
   sub_test_case "class_methods" do
+    test "ancestors" do
+      assert_equal([String, Comparable, Object, Kernel, BasicObject], String.ancestors)
+    end
+
     test "new" do
       assert_equal("", String.new)
 
@@ -292,4 +296,3 @@ class TestString < Test::Unit::TestCase
   #   end
 
 end
-
