@@ -33,16 +33,20 @@ class TestNKF < Test::Unit::TestCase
   end
 
   test "hiragana" do
-    assert_equal("漢字かなかたかな", NKF::nkf("--hiragana -w", "漢字ｶﾅｶﾀｶﾅ"))
+    assert_equal("漢あああ", NKF::nkf("--hiragana -w", "漢あアｱ"))
+  end
+
+  test "katakana" do
+    assert_equal("漢アアア", NKF::nkf("--katakana -w", "漢あアｱ"))
   end
 end
 # >> Loaded suite -
 # >> Started
-# >> .....
+# >> ......
 # >> 
-# >> Finished in 0.001222 seconds.
+# >> Finished in 0.001403 seconds.
 # >> ------
-# >> 5 tests, 11 assertions, 0 failures, 0 errors, 0 pendings, 0 omissions, 0 notifications
+# >> 6 tests, 12 assertions, 0 failures, 0 errors, 0 pendings, 0 omissions, 0 notifications
 # >> 100% passed
 # >> ------
-# >> 4091.65 tests/s, 9001.64 assertions/s
+# >> 4276.55 tests/s, 8553.10 assertions/s
