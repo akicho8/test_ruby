@@ -7,8 +7,8 @@ class TestTrueFalse < Test::Unit::TestCase
     assert_equal(20, true.object_id)
     assert_equal(0, false.object_id)
 
-    assert_equal(true, TRUE) # !> constant ::TRUE is deprecated
-    assert_equal(false, FALSE) # !> constant ::FALSE is deprecated
+    # assert_equal(true, TRUE) # !> constant ::TRUE is deprecated
+    # assert_equal(false, FALSE) # !> constant ::FALSE is deprecated
 
     assert_equal(false, false.clone) # 昔は false.clone で TypeError になっていたがエラーにならなくなった★
     assert_equal(false, false.dup)
