@@ -44,9 +44,9 @@ end
 # >> Started
 # >> ......
 # >> 
-# >> Finished in 0.001403 seconds.
+# >> Finished in 0.003895 seconds.
 # >> ------
 # >> 6 tests, 12 assertions, 0 failures, 0 errors, 0 pendings, 0 omissions, 0 notifications
 # >> 100% passed
 # >> ------
-# >> 4276.55 tests/s, 8553.10 assertions/s
+# >> 1540.44 tests/s, 3080.87 assertions/s

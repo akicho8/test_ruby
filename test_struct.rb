@@ -72,9 +72,9 @@ end
 # >> Started
 # >> ....
 # >> 
-# >> Finished in 0.001191 seconds.
+# >> Finished in 0.001171 seconds.
 # >> ------
-# >> 4 tests, 9 assertions, 0 failures, 0 errors, 0 pendings, 0 omissions, 0 notifications
+# >> 4 tests, 8 assertions, 0 failures, 0 errors, 0 pendings, 0 omissions, 0 notifications
 # >> 100% passed
 # >> ------
-# >> 3358.52 tests/s, 7556.68 assertions/s
+# >> 3415.88 tests/s, 6831.77 assertions/s

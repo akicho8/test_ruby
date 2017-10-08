@@ -7,6 +7,7 @@ class TestJson < Test::Unit::TestCase
     test "self[object, options] -> object" do
     end
 
+    # これはなんだ？？？
     test "create_id" do
       before_value = JSON.create_id
       assert_equal("json_class", JSON.create_id)
@@ -35,9 +36,9 @@ end
 # >> Started
 # >> .....
 # >> 
-# >> Finished in 0.0013 seconds.
+# >> Finished in 0.001182 seconds.
 # >> ------
 # >> 5 tests, 8 assertions, 0 failures, 0 errors, 0 pendings, 0 omissions, 0 notifications
 # >> 100% passed
 # >> ------
-# >> 3846.15 tests/s, 6153.85 assertions/s
+# >> 4230.12 tests/s, 6768.19 assertions/s

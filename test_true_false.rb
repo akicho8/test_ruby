@@ -7,8 +7,8 @@ class TestTrueFalse < Test::Unit::TestCase
     assert_equal(20, true.object_id)
     assert_equal(0, false.object_id)
 
-    # assert_equal(true, TRUE) # !> constant ::TRUE is deprecated
-    # assert_equal(false, FALSE) # !> constant ::FALSE is deprecated
+    assert_equal(true, TRUE)
+    assert_equal(false, FALSE)
 
     assert_equal(false, false.clone) # 昔は false.clone で TypeError になっていたがエラーにならなくなった★
     assert_equal(false, false.dup)
@@ -20,3 +20,13 @@ class TestTrueFalse < Test::Unit::TestCase
     assert_equal(false, false | false)
   end
 end
+# >> Loaded suite -
+# >> Started
+# >> .
+# >> 
+# >> Finished in 0.000498 seconds.
+# >> ------
+# >> 1 tests, 13 assertions, 0 failures, 0 errors, 0 pendings, 0 omissions, 0 notifications
+# >> 100% passed
+# >> ------
+# >> 2008.03 tests/s, 26104.42 assertions/s
