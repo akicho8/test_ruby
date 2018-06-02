@@ -1,4 +1,4 @@
-require "test/unit"
+require "./test_helper"
 
 # https://docs.ruby-lang.org/ja/2.4.0/class/String.html
 class TestString < Test::Unit::TestCase

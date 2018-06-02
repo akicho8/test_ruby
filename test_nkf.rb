@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # ↑これいる。rcodetools を正常に動かすため。
 
-require "test/unit"
+require "./test_helper"
 require "nkf"
 
 # https://docs.ruby-lang.org/ja/2.4.0/class/NKF.html

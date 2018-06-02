@@ -1,4 +1,4 @@
-require "test/unit"
+require "./test_helper"
 
 class TestTrueFalse < Test::Unit::TestCase
   test "true, false" do
