@@ -316,22 +316,10 @@ class TestString < Test::Unit::TestCase
 end
 # >> Loaded suite -
 # >> Started
-# >> .........F
-# >> ===============================================================================
-# >> Failure: test: capitalize(TestString)
-# >> -:140:in `block in <class:TestString>'
-# >> <"Foo_bar"> expected but was
-# >> <"foo_bar">
-# >> 
-# >> diff:
-# >> ? Foo_bar
-# >> ? f      
-# >> ===============================================================================
-# >> .....
-# >> 
-# >> Finished in 0.010933 seconds.
-# >> ------
-# >> 15 tests, 56 assertions, 1 failures, 0 errors, 0 pendings, 0 omissions, 0 notifications
-# >> 93.3333% passed
-# >> ------
-# >> 1371.99 tests/s, 5122.11 assertions/s
+# >> ...............
+# >> Finished in 0.002228 seconds.
+# >> -------------------------------------------------------------------------------
+# >> 15 tests, 56 assertions, 0 failures, 0 errors, 0 pendings, 0 omissions, 0 notifications
+# >> 100% passed
+# >> -------------------------------------------------------------------------------
+# >> 6732.50 tests/s, 25134.65 assertions/s

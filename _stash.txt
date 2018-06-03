@@ -1,0 +1,216 @@
+  #   assert_equal("1", "%d" % 1)
+  #   assert_equal("1 2", "%d %d" % [1, 2])
+  #   end
+  #   def test_MULTI                # *
+  #     assert_equal("AAAA", "A" * 4)
+  #   end
+  #   def test_PLUS                 # +
+  #     assert_equal("AB", "A" + "B")
+  #   end
+  #   def test_SHIFT                # << concat
+  #     assert_equal("ABC", "A" << "B" << "C")
+  #   end
+  #   def test_CMP                  # <=>
+  #     assert_equal(-1, "A" <=> "B")
+  #     assert_equal(+1, "B" <=> "A")
+  #     assert_equal( 0, "A" <=> "A")
+  # #     $old = $=
+  # #     $= = true                 # 大文字小文字区別無し
+  # #     assert_equal( 0, "A" <=> "a")
+  # #     $= = $old
+  #   end
+  #   def test_EQEQ                 # ==,===
+  #     assert_equal(true, "A" == "A")
+  # #   end
+
+
+  #   def test_EQWAVE               # =~
+  #     assert_equal(0, "A" =~ /A/)
+  #   end
+  #   def test_AREF                 # [], slice
+  #     assert_equal(?A, "A"[0])    # 戻り値は文字列ではなく文字である点に注意
+  #     assert_equal("A", "A"[0..0])# 範囲指定風にすると文字列になる
+  #     assert_equal("B", "ABC"["B"]) # strstr風の使い方も出来る
+  #     assert_equal("B", "ABC"[/B/]) # 正規表現を入れる事も出来る
+  #   end
+  #   def test_ASET
+  #     x="ABAB"; x[1]=?X;    assert_equal("AXAB", x)
+  #     x="ABAB"; x["B"]="X"; assert_equal("AXAB", x) # sub と同じ
+  #     x="ABAB"; x[/B/]="X"; assert_equal("AXAB", x) # sub と同じ
+  #   end
+  #   def test_capitalize
+  #     assert_equal("Abc", "ABC".capitalize)
+  #     assert_equal("Abc", (x="ABC"; x.capitalize!))
+  #   end
+  #   def test_center
+  #     assert_equal(" A ", "A".center(3))
+  #   end
+  #   def test_chomp
+  #     assert_equal("A", "A".chomp)
+  #     assert_equal("A", "A\n".chomp)
+  #     assert_equal("A", (x="A\n"; x.chomp!))
+  #   end
+  #   def test_chop
+  #     assert_equal("A", "ABC".chop.chop)
+  #     assert_equal("A", "A\r\n".chop)
+  #     assert_equal("A\n", "A\n\r".chop) # \n\rの場合は \r のみ削除
+  #     assert_equal("", (x="A"; x.chop!; x))
+  #   end
+  #   def test_concat
+  #     assert_equal("AB", "A".concat("B"))
+  #     assert_equal("AB", "A" <<     "B")
+  #   end
+  #   def test_count
+  #     assert_equal(1, "A".count("A"))
+  #     assert_equal(2, "AA".count("A"))
+  #     assert_equal(3, "ABC".count("A-C"))
+  #     assert_equal(2, "ABC".count("^A"))
+  #   end
+  #   def test_crypt
+  #     assert_equal("AB4esoRQkR5vM", "hello".crypt("AB"))
+  #     assert_equal("AB4esoRQkR5vM", "hello".crypt("ABC")) # 2文字しか使わないのでそれ以上設定しても関係無い
+  #   end
+  #   def test_delete               # countと同じ規則で削除
+  #     assert_equal("a", "abc".delete("bc"))
+  #     assert_equal("b", "abc".delete("ac"))
+  #     assert_equal("c", "abc".delete("^c"))
+  #     assert_equal("a", (x="abc"; x.delete!("bc")))
+  #   end
+  #   def test_downcase
+  #     assert_equal("abc", "AbC".downcase)
+  #     assert_equal("abc", (x="AbC"; x.downcase!))
+  #   end
+  #   def test_dump
+  #     assert_equal("\"\\a\"", ("%c"%7).dump)
+  #   end
+  #   def test_each                 # each_line
+  #     x=[]; "ABAB"      .each("B") {|e|x<<e}; assert_equal(["AB",   "AB"   ], x)
+  #     x=[]; "A\nA\n"    .each      {|e|x<<e}; assert_equal(["A\n",  "A\n"  ], x)
+  #     x=[]; "A\r\nA\r\n".each      {|e|x<<e}; assert_equal(["A\r\n","A\r\n"], x)
+  #     x=[]; "A\r\nA\r\n".each("\n"){|e|x<<e}; assert_equal(["A\r\n","A\r\n"], x)
+  #   end
+  #   def test_each_byte
+  #     x=[]; "\r\n".each_byte{|e|x<<e}; assert_equal([13,10], x)
+  #   end
+  #   def test_empty?
+  #     assert_equal(true, "".empty?)
+  #   end
+  #   def test_gsub
+  #     assert_equal("<foo>bar<foo>bar", "foobarfoobar".gsub(/(foo)/, '<\1>'))
+  #     x="AB"; x.gsub!(/A/, "X"); assert_equal("XB", x)
+  #   end
+  #   def test_hash
+  #     assert_equal(833038373, "abc".hash)
+  #   end
+  #   def test_hex
+  #     assert_equal(10, "0xa".hex)
+  #     assert_equal(10,   "a".hex)
+  #     assert_equal(0,     "".hex)
+  #     assert_equal(0,    "G".hex)
+  #   end
+  #   def test_include?
+  #     assert_equal(true, "abc".include?("a"))
+  #     assert_equal(true, "abc".include?("ab"))
+  #     assert_equal(false,"abc".include?("x"))
+  #     assert_equal(true,"a[b]c".include?("[b]"))
+  #   end
+  #   def test_index
+  #     assert_equal(1, "abc".index(?b))
+  #     assert_equal(1, "abc".index("b"))
+  #     assert_equal(1, "abc".index(/b/))
+  #     assert_equal(1, "bbc".index("b",1))
+  #   end
+  #   def test_intern
+  #     assert_equal(:a, "a".intern)
+  #   end
+  #   def test_length               # size
+  #     assert_equal(1, "a".length)
+  #   end
+  #   def test_ljust
+  #     assert_equal("a ", "a".ljust(2))
+  #     assert_equal("あ  ", "あ".ljust(4))
+  #   end
+  #   def test_next                 # next! succ succ!
+  #     assert_equal("b", "a".next)
+  #     assert_equal("b", (x="a"; x.next!))
+  #   end
+  #   def test_oct
+  #     assert_equal(10, "12".oct)
+  #     assert_equal(10, "012".oct)
+  #     assert_equal(0, "".oct)
+  #   end
+  #   def test_replace
+  #     x = "A"
+  #     id = x.object_id
+  #     x.replace("B")
+  #     assert_equal(id, x.object_id)
+  #   end
+  #   def test_reverse
+  #     assert_equal("cba", "abc".reverse)
+  #     assert_equal("cba", (x="abc"; x.reverse!; x))
+  #   end
+  #   def test_rindex
+  #     assert_equal(3, "abcabc".rindex("a"))
+  #   end
+  #   def test_rjust
+  #     assert_equal(" a", "a".rjust(2))
+  #   end
+  #   def test_scan
+  #     assert_equal(["a","a"], "abab".scan(/a/))
+  #   end
+  #   def test_slice
+  #     x = "foobar"
+  #     assert_equal("bar", x.slice!(/bar/))
+  #     assert_equal("foo", x)
+  #   end
+  #   def test_split
+  #     assert_equal(["a","b","c"], "abc".split(//))
+  #     assert_equal(["a","bc"], "abc".split(//, 2))
+  #   end
+  #   def test_squeeze
+  #     assert_equal("abc", "aabbcc".squeeze)
+  #     assert_equal("abc", (x="aabbcc"; x.squeeze!; x))
+  #   end
+  #   def test_strip
+  #     assert_equal("a", " a \r\n".strip)
+  #     assert_equal("a", (x=" a \r\n"; x.strip!; x))
+  #   end
+  #   def test_sub
+  #     assert_equal("xb", "ab".sub(/a/, "x"))
+  #     assert_equal("xb", (x="ab"; x.sub!(/a/,"x"); x))
+  #   end
+  #   def test_sum
+  #     assert_equal(294, "abc".sum)
+  #   end
+  #   def test_swapcase
+  #     assert_equal("aBc", "AbC".swapcase)
+  #     assert_equal("aBc", (x="AbC"; x.swapcase!; x))
+  #   end
+  #   def test_to_f
+  #     assert_equal(12.34, "12.34".to_f)
+  #   end
+  #   def test_to_i
+  #     assert_equal(12, "12".to_i)
+  #   end
+  #   def test_to_s                 # to_str
+  #     assert_equal("ab", "ab".to_s)
+  #   end
+  #   def test_tr
+  #     assert_equal("xyyz", "abbc".tr("a-c", "x-z"))
+  #   end
+  #   def test_tr_s
+  #     assert_equal("xyz", "abbc".tr_s("a-c", "x-z"))
+  #     assert_equal("xyz", (x="abbc"; x.tr_s!("a-c", "x-z"); x))
+  #   end
+  #   def test_unpack
+  #     assert_equal([13, 10], "\r\n".unpack("c*"))
+  #   end
+  #   def test_upcase
+  #     assert_equal("ABC", "aBc".upcase)
+  #     assert_equal("ABC", (x="aBc"; x.upcase!; x))
+  #   end
+  #   def test_upto
+  #     x = []
+  #     "a".upto("c"){|e|x<<e}
+  #     assert_equal(["a", "b", "c"], x)
+  #   end

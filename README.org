@@ -1,1 +1,4 @@
 * TestRuby
+
+- xmpfilter を使う前提
+- rspec にすると xmpfilter が動かないので test/unit にする
