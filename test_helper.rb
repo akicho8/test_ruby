@@ -6,6 +6,7 @@ $VERBOSE = true
 module Test::Unit::Assertions
   def assert_print(except)
     save_stdout = $stdout
+    require "tempfile"
     tempfile = Tempfile.new("stdout")
     $stdout = tempfile
     yield

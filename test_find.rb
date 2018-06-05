@@ -1,28 +1,21 @@
 require "./test_helper"
-
 require "find"
 
+# https://docs.ruby-lang.org/ja/latest/class/Find.html
 class TestFind < Test::Unit::TestCase
+  # ignore_error: true がデフォルト
   test "find" do
-    files = []
-    Find.find("/bin") {|f|files << f}
-    assert_equal(true, 1 <= files.size)
+    assert { Find.find("/bin", "/usr/bin", ignore_error: true).class == Enumerator }
   end
+
+  # next より協力なやつ
   test "prune" do
-    files = []
-    Find.find("/bin", "/etc") {|f|
-      Find.prune if f == "/etc"	# /etc の走査はスキップ
-      files << f
-    }
-    assert_equal(true, 1 <= files.size)
+    Find.find("/usr") do |f|
+      if f == "/usr/bin"        # 必ずディレクトリのチェック
+        Find.prune # 配下をスキップ(ブロックに渡されたのがディレクトリの場合のみ機能する)
+      end
+      # next の場合はスキップするだけ
+      break
+    end
   end
 end
-# >> Loaded suite -
-# >> Started
-# >> ..
-# >> Finished in 0.001846 seconds.
-# >> -------------------------------------------------------------------------------
-# >> 2 tests, 2 assertions, 0 failures, 0 errors, 0 pendings, 0 omissions, 0 notifications
-# >> 100% passed
-# >> -------------------------------------------------------------------------------
-# >> 1083.42 tests/s, 1083.42 assertions/s

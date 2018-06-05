@@ -66,9 +66,9 @@ end
 # >> Loaded suite -
 # >> Started
 # >> .........
-# >> Finished in 0.002162 seconds.
+# >> Finished in 0.001997 seconds.
 # >> -------------------------------------------------------------------------------
 # >> 9 tests, 17 assertions, 0 failures, 0 errors, 0 pendings, 0 omissions, 0 notifications
 # >> 100% passed
 # >> -------------------------------------------------------------------------------
-# >> 4162.81 tests/s, 7863.09 assertions/s
+# >> 4506.76 tests/s, 8512.77 assertions/s
