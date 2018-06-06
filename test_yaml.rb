@@ -1,38 +1,22 @@
-
-
-
 require "./test_helper"
 require "yaml"
-require "kconv"
 
-require "yaml"
-
-class String
-  def is_binary_data?
-    false
+# https://docs.ruby-lang.org/ja/latest/library/yaml.html
+class TestYaml < Test::Unit::TestCase
+  test ".dump" do
+    assert { YAML.dump({v: 1}) == "---\n:v: 1\n" }
   end
 
-  def decode
-    gsub(/\\x(\w{2})/){[Regexp.last_match.captures.first.to_i(16)].pack("C")}
+  test ".load" do
+    assert { YAML.load("---\n:v: 1\n") == {:v=>1} }
   end
 end
-
-ObjectSpace.each_object(Class){|klass|
-  klass.class_eval{
-    if method_defined?(:to_yaml) && !method_defined?(:to_yaml_with_decode)
-      def to_yaml_with_decode(*args)
-        result = to_yaml_without_decode(*args)
-        if result.kind_of? String
-          result.decode
-        else
-          result
-        end
-      end
-      alias_method :to_yaml_without_decode, :to_yaml
-      alias_method :to_yaml, :to_yaml_with_decode
-    end
-  }
-}
-
-puts [["あ", "い"], {"う" => ["え"]}, Struct.new(:name).new("お")].to_yaml
-puts YAML.load([["あ", "い"], {"う" => ["え"]}, Struct.new(:name).new("お")].to_yaml).to_yaml
+# >> Loaded suite -
+# >> Started
+# >> ..
+# >> Finished in 0.008511 seconds.
+# >> -------------------------------------------------------------------------------
+# >> 2 tests, 2 assertions, 0 failures, 0 errors, 0 pendings, 0 omissions, 0 notifications
+# >> 100% passed
+# >> -------------------------------------------------------------------------------
+# >> 234.99 tests/s, 234.99 assertions/s
