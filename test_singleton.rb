@@ -1,37 +1,31 @@
-
-
-
 require "./test_helper"
 
 require "singleton"
 
-class SingletonTest
-  include Singleton
-  attr_reader :count
-  def initialize # Singletonの場合 initialize に引数は書くことが出来ない
-    @count = 0
-  end
-  def up
-    @count += 1
-  end
-end
-
 class TestSingleton < Test::Unit::TestCase
-  # newは出来なくなる(ということは initialize も出来ない)
-  test "new_NameError" do
-    assert_raises(NameError){SingletonTest.new} if RUBY_VERSION <= "1.6"
-    assert_raises(NoMethodError){SingletonTest.new} if RUBY_VERSION >= "1.8"
+  class Foo
+    include Singleton
+
+    attr_accessor :count
+
+    # initialize に引数はかけない
+    def initialize
+      @count = 0
+    end
   end
 
-  # インスタンスが共有されている証明
-  # これを利用するとグローバル変数一切使わないコーディングが可能
-  test "instance" do
-    x = SingletonTest.instance
-    y = SingletonTest.instance
-    assert_equal(x.object_id, y.object_id)
-    x.up
-    y.up
-    assert_equal(2, x.count)
-    assert_equal(2, y.count)
+  test "インスタンスが共有されている" do
+    a = Foo.instance
+    b = Foo.instance
+    assert { (a.object_id == b.object_id) == true }
   end
 end
+# >> Loaded suite -
+# >> Started
+# >> .
+# >> Finished in 0.007107 seconds.
+# >> -------------------------------------------------------------------------------
+# >> 1 tests, 1 assertions, 0 failures, 0 errors, 0 pendings, 0 omissions, 0 notifications
+# >> 100% passed
+# >> -------------------------------------------------------------------------------
+# >> 140.71 tests/s, 140.71 assertions/s

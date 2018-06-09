@@ -1,6 +1,3 @@
-
-
-
 require "./test_helper"
 
 require "mkmf"
@@ -25,7 +22,7 @@ class TestMkmf < Test::Unit::TestCase
     p have_header("stdio.h")	#=> checking for stdio.h... yes       (ture)
     p have_library("c")		#=> checking for main() in -lc... yes (true)
 
-    # Hogeライブラリ用 Makefile の作成
-    create_makefile("Hoge")	#=> creating Makefile
+    # Foo ライブラリ用 Makefile の作成
+    create_makefile("Foo")	#=> creating Makefile
   end
 end

@@ -1,6 +1,3 @@
-
-
-
 require "./test_helper"
 
 require "ping"
@@ -21,7 +18,7 @@ class TestPing < Test::Unit::TestCase
     tary = []
     range.each {|port|
       tary << Thread.new {
-	ports << port if Ping::pingecho(host, timeout, port)
+        ports << port if Ping::pingecho(host, timeout, port)
       }
     }
     tary.each{|e|e.join}

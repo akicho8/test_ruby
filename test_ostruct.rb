@@ -3,6 +3,10 @@ require "ostruct"
 
 # https://docs.ruby-lang.org/ja/latest/class/OpenStruct.html
 class TestOStruct < Test::Unit::TestCase
+  test ".inspectKey" do
+    OpenStruct::InspectKey
+  end
+
   test ".new" do
     o = OpenStruct.new(a: 1)
     o.c = 3
@@ -14,7 +18,7 @@ class TestOStruct < Test::Unit::TestCase
     assert { o.d == 4 }
   end
 
-  # どっちも同じ？
+  # alias ではないがどちらも最初は同じ実装
   test "==, eql?" do
     a = OpenStruct.new(a: 1)
     b = Class.new(OpenStruct).new(a: 1)
@@ -48,23 +52,34 @@ class TestOStruct < Test::Unit::TestCase
     assert { o.to_s == "#<OpenStruct a=1>" }
   end
 
-  # ★ Hash が返るとドキュメントにはあるが実際は nil
-  test "modifiable" do
-    o = OpenStruct.new(a: 1)
-    assert { o.modifiable == nil }
+  "#{<<-"{#"}\n#{<<-'};'}"
+  {#
+    # ★ このメソッドはないっぽい
+    test "modifiable?" do
+      o = OpenStruct.new(a: 1)
+      assert { o.modifiable == nil }
 
-    # ★ 自身が Object#freeze されている場合にこのメソッドを呼び出すと例外が発生します → 発生しない
-    o.freeze
-    assert { o.modifiable == nil }
-  end
+      o.freeze
+      assert { o.modifiable == nil }
+    end
 
-  # Error: test: new_ostruct_member(TestOStruct): NoMethodError: protected method `new_ostruct_member' called for #<OpenStruct>
-  test "new_ostruct_member" do
-    o = OpenStruct.new
-    assert_raise(NoMethodError) { o.new_ostruct_member(:a) }
-  end
+    # Error: test: new_ostruct_member(TestOStruct): NoMethodError: protected method `new_ostruct_member' called for #<OpenStruct>
+    test "new_ostruct_member" do
+      o = OpenStruct.new
+      assert_raise(NoMethodError) { o.new_ostruct_member(:a) }
+    end
+  };
 
   test "to_h" do
     assert { OpenStruct.new(a: 1).to_h == {:a=>1} }
   end
 end
+# >> Loaded suite -
+# >> Started
+# >> .........
+# >> Finished in 0.006887 seconds.
+# >> -------------------------------------------------------------------------------
+# >> 9 tests, 13 assertions, 0 failures, 0 errors, 0 pendings, 0 omissions, 0 notifications
+# >> 100% passed
+# >> -------------------------------------------------------------------------------
+# >> 1306.81 tests/s, 1887.61 assertions/s
