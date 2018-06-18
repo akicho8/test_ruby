@@ -14,49 +14,6 @@ class TestEnumerable < Test::Unit::TestCase
     end
   end
 
-  # test "collect, map" do
-  #   assert { Foo.new.collect.to_a == [:a, :b, :c] }
-  # end
-  #
-  # test "detect, find" do
-  #   assert { Foo.new.detect { |e| e == :b } == :b }
-  #   assert { Foo.new.detect(-> { "xxx" }) { |v| v == :x} == "xxx" } # call が呼べないといけない。この機能は使いづらいせいか知られてない ★
-  # end
-  #
-  # test "each.with_index" do
-  #   assert { Foo.new.each.with_index.to_a == [[:a, 0], [:b, 1], [:c, 2]] }
-  # end
-  #
-  # test "entries, to_a" do
-  #   assert { Foo.new.to_a == [:a, :b, :c] }
-  #   assert { Foo.new.entries == [:a, :b, :c] }
-  # end
-  #
-  # test "select, find_all" do
-  #   assert { Foo.new.select { |e| e >= :b } == [:b, :c] }
-  # end
-  #
-  # test "reject" do
-  #   assert { Foo.new.reject { |v| v >= :b } == [:a] }
-  # end
-  #
-  # test "grep" do
-  #   assert { Foo.new.grep(:a..:b) == [:a, :b] }
-  # end
-  #
-  # test "include?, member?" do
-  #   assert { Foo.new.include?(:a) == true }
-  # end
-  #
-  # test "max, min" do
-  #   assert { Foo.new.max == :c }
-  #   assert { Foo.new.min == :a }
-  # end
-  #
-  # test "sort" do
-  #   assert { Foo.new.sort == [:a, :b, :c] }
-  # end
-
   test "all?" do
     assert { [].all? == true }
     assert { [:a, :b].all? == true }
@@ -127,7 +84,7 @@ class TestEnumerable < Test::Unit::TestCase
   test "cycle" do
     assert { [].cycle {} == nil }
 
-    # ★ 引数に回数が指定できる
+    # ★ 引数に周回数が指定できる。要素数ではない。
     assert { [:a, :b, :c].cycle(2).to_a == [:a, :b, :c, :a, :b, :c] }
 
     # 通し番号が欲しいときの例
@@ -135,12 +92,20 @@ class TestEnumerable < Test::Unit::TestCase
   end
 
   test "detect, find" do
+    assert { [:a, :b].find { |e| e == :a } == :a }
+
+    # ★ブロックで真が返らないときは引数をcallした結果
+    assert { [:a, :b].find(-> { :c }) { false } == :c }
   end
 
-  test "drop" do
+  test "take, drop" do
+    assert { [:a, :b, :c].take(1) == [:a] }
+    assert { [:a, :b, :c].drop(1) == [:b, :c] }
   end
 
-  test "drop_while" do
+  test "take_while, drop_while" do
+    assert { [:a, :b, :c, :d].take_while { |e| e < :c } == [:a, :b] }
+    assert { [:a, :b, :c, :d].drop_while { |e| e < :c } == [:c, :d] }
   end
 
   test "each_cons" do
@@ -254,13 +219,16 @@ class TestEnumerable < Test::Unit::TestCase
   test "sum" do
   end
 
-  test "take" do
-  end
-
   test "take_while" do
   end
 
   test "to_h" do
+    assert { [[:a, :b], [:c, :d]].to_h == {:a=>:b, :c=>:d} }
+
+    assert_raise(TypeError) { [:a].to_h }
+    assert_raise(TypeError) { [:a, :b].to_h }
+    # ★ハッシュが混っていてもダメ
+    assert_raise(TypeError) { [[:a, :b], {c: :d}].to_h }
   end
 
   test "uniq" do
