@@ -1,35 +1,41 @@
 require "./test_helper"
 
-# https://docs.ruby-lang.org/ja/2.4.0/class/Struct.html
-class TesStruct < Test::Unit::TestCase
-  sub_test_case "class_methods" do
-    test "ancestors" do
-      # require "json" で変わってしまう
-      # assert_equal([Struct, Enumerable, Object, Kernel, BasicObject], Struct.ancestors)
-    end
-
-    test "new" do
-      assert_equal("Struct::Foo", Struct.new("Foo", :x).name) # Struct の下にできる
-      assert_nil(Struct.new(:x).name) # 昔は "" だったが nil になった★
-      assert_raise(ArgumentError) { Struct.new } # 引数ない構造体を認めないのはおかしい
-
-      # 定数に割り当てた瞬間に名前が確定する
-      s = Struct.new(:x)
-      assert_nil(s.name)
-      C = s
-      assert_equal("TesStruct::C", s.name)
-      # さらに別の定数に設定しても決まった定数は変わらない
-      D = s
-      assert_equal("TesStruct::C", s.name)
-    end
+# https://docs.ruby-lang.org/ja/2.5.0/class/Struct.html
+class TestStruct < Test::Unit::TestCase
+  test "Struct.new" do
+    assert { Struct.new("Foo", :x).name == "Struct::Foo" }
+    assert { Struct.new(:x).name == nil }
+    assert_raise(ArgumentError) { Struct.new }
   end
 
-  test "[]" do
-    assert_equal("#<struct x=:a>", Struct.new(:x)[:a].inspect)
+  test "Struct.new(*args, keyword_init: true)" do
+    # ★ いちばん欲しかったのはこれだった
+    s = Struct.new(:x, :y, keyword_init: true)
+    assert { s.new(x: 1, y: 2).inspect == "#<struct x=1, y=2>" }
+    # 従来の使い方はできなくなる
+    assert_raise(ArgumentError) { s.new(1, 2) }
+  end
+
+  test "定数に割り当てた瞬間に名前が確定する" do
+    s = Struct.new(:x)
+    assert { s.name == nil }
+    C = s
+    assert { s.name == "TestStruct::C" }
+    # さらに別の定数に設定しても決まった定数は変わらない
+    D = s
+    assert { s.name == "TestStruct::C" }
+  end
+
+  test ".new, .[]" do
+    s = Struct.new(:x, :y)
+    o1 = s[1, 2]
+    o2 = s.new(1, 2)
+    assert { o1.inspect == "#<struct x=1, y=2>" }
+    assert { o2.inspect == "#<struct x=1, y=2>" }
   end
 
   test "members" do
-    assert_equal([:x, :y], Struct.new(:x, :y).members) # 昔は文字列だったがシンボルになった
+    assert { Struct.new(:x, :y).members == [:x, :y] }
   end
 
   test "==" do
@@ -39,36 +45,50 @@ class TesStruct < Test::Unit::TestCase
     assert_equal(true, x == y)
   end
 
-  test "AREF" do
-    x = Struct.new(:x, :y).new(1, 2)
-    assert_equal(1, x[:x])
-    assert_equal(1, x["x"])
-    assert_equal(1, x[0])
-    assert_equal(1, x.x)
+  test "[], []=" do
+    s = Struct.new(:x).new(1)
+    assert { s[:x] == 1 }
+    assert { s["x"] == 1 }
+    assert { s[0] == 1 }
+
+    s[:x] = 2
+    assert { s[0] == 2 }
   end
 
   test "each" do
-    s = []
-    x = Struct.new(:x, :y).new(1, 2)
-    x.each {|e| s << e}
-    assert_equal([1, 2], s)
+    assert { Struct.new(:x, :y).new(1, 2).each.to_a == [1, 2] }
   end
 
-  test "length" do
-    assert_equal(2, Struct.new(:x, :y).new(1, 2).size)
+  test "each_pair" do
+    s = Struct.new(:x, :y).new(1, 2)
+    assert { s.each_pair.to_a == [[:x, 1], [:y, 2]] }
   end
 
-  test "to_a" do
-    assert_equal([1, 2], Struct.new(:x, :y).new(1, 2).to_a)
-    assert_equal([1, 2], Struct.new(:x, :y).new(1, 2).values)
+  test "length, size" do
+    assert { Struct.new(:x, :y).new(1, 2).length == 2 }
+  end
+
+  test "values, to_a" do
+    s = Struct.new(:x, :y).new(1, 2)
+    assert { s.values == [1, 2] }
+    assert { s.to_a == [1, 2] }
+  end
+
+  test "values_at" do
+    s = Struct.new(:x, :y, :z).new(1, 2, 3)
+    assert { s.values_at(0, 2) == [1, 3] }
+    assert { s.values_at(0..1) == [1, 2] }
+
+    # ★ キー指定できないのは使いづらい
+    assert_raise(TypeError) { s.values_at(:x, :z) }
+
+    # ★ keyword_init を使ってもキーではアクセスできない。これはいけてない。
+    s = Struct.new(:x, :y, :z, keyword_init: true).new(x: 1, y: 2, z: 3)
+    assert_raise(TypeError) { s.values_at(:x, :z) }
+  end
+
+  test "to_h" do
+    s = Struct.new(:x, :y).new(1, 2)
+    assert { s.to_h == {:x => 1, :y => 2} }
   end
 end
-# >> Loaded suite -
-# >> Started
-# >> .........
-# >> Finished in 0.001997 seconds.
-# >> -------------------------------------------------------------------------------
-# >> 9 tests, 17 assertions, 0 failures, 0 errors, 0 pendings, 0 omissions, 0 notifications
-# >> 100% passed
-# >> -------------------------------------------------------------------------------
-# >> 4506.76 tests/s, 8512.77 assertions/s

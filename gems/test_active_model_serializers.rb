@@ -1,4 +1,4 @@
-require "./test_helper"
+require "../test_helper"
 
 require "active_record"
 require "active_model_serializers"

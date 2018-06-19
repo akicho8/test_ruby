@@ -226,3 +226,12 @@ class TestInteger < Test::Unit::TestCase
     assert { ~0 == -1 }
   end
 end
+# >> Loaded suite -
+# >> Started
+# >> ..................................
+# >> Finished in 0.017477 seconds.
+# >> -------------------------------------------------------------------------------
+# >> 34 tests, 81 assertions, 0 failures, 0 errors, 0 pendings, 0 omissions, 0 notifications
+# >> 100% passed
+# >> -------------------------------------------------------------------------------
+# >> 1945.41 tests/s, 4634.66 assertions/s

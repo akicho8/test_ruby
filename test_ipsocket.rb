@@ -8,7 +8,7 @@ class TestIPSocket < Test::Unit::TestCase
   end
 
   test "s_getaddress" do
-    assert { IPSocket.getaddress('example.net') == "93.184.216.34" }
+    assert { IPSocket.getaddress('localhost') == "127.0.0.1" }
   end
 
   test "addr" do
