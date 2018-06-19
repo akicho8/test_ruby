@@ -85,10 +85,10 @@ class TestEnumerable < Test::Unit::TestCase
     assert { [].cycle {} == nil }
 
     # ★ 引数に周回数が指定できる。要素数ではない。
-    assert { [:a, :b, :c].cycle(2).to_a == [:a, :b, :c, :a, :b, :c] }
+    assert { (:a..:c).cycle(2).to_a == [:a, :b, :c, :a, :b, :c] }
 
     # 通し番号が欲しいときの例
-    assert { [:a, :b, :c].cycle(2).with_index.to_a == [[:a, 0], [:b, 1], [:c, 2], [:a, 3], [:b, 4], [:c, 5]] }
+    assert { (:a..:c).cycle(2).with_index.to_a == [[:a, 0], [:b, 1], [:c, 2], [:a, 3], [:b, 4], [:c, 5]] }
   end
 
   test "detect, find" do
@@ -99,31 +99,34 @@ class TestEnumerable < Test::Unit::TestCase
   end
 
   test "take, drop" do
-    assert { [:a, :b, :c].take(1) == [:a] }
-    assert { [:a, :b, :c].drop(1) == [:b, :c] }
+    assert { (:a..:c).take(1) == [:a] }
+    assert { (:a..:c).drop(1) == [:b, :c] }
   end
 
   test "take_while, drop_while" do
-    assert { [:a, :b, :c, :d].take_while { |e| e < :c } == [:a, :b] }
-    assert { [:a, :b, :c, :d].drop_while { |e| e < :c } == [:c, :d] }
+    assert { (:a..:d).take_while { |e| e < :c } == [:a, :b] }
+    assert { (:a..:d).drop_while { |e| e < :c } == [:c, :d] }
   end
 
-  test "each_cons" do
+  test "each_cons, each_slice" do
+    assert { [1, 2, 3].each_cons(2).to_a == [[1, 2], [2, 3]] }
+    assert { [1, 2, 3].each_slice(2).to_a == [[1, 2], [3]] }
   end
 
   test "each_entry" do
   end
 
-  test "each_slice" do
-  end
-
   test "each_with_index" do
+    assert { [:a, :b].each_with_index.to_a == [[:a, 0], [:b, 1]] }
   end
 
   test "each_with_object" do
+    assert { [1, 2].each_with_object([]) { |e, m| m << e } == [1, 2] }
   end
 
   test "entries, to_a" do
+    assert { (:a..:c).each.entries == [:a, :b, :c] }
+    assert { (:a..:c).each.to_a == [:a, :b, :c] }
   end
 
   test "find_all, select" do
@@ -141,7 +144,7 @@ class TestEnumerable < Test::Unit::TestCase
     assert { [:a, :b].first(1) == [:a] }
     assert { [:a, :b].first(2) == [:a, :b] }
     assert { [:a, :b].first(3) == [:a, :b] }
-    assert_raise(ArgumentError) { [:a, :b, :c].first(-1) }
+    assert_raise(ArgumentError) { (:a..:c).first(-1) }
   end
 
   test "last" do
@@ -151,12 +154,12 @@ class TestEnumerable < Test::Unit::TestCase
 
   test "grep, grep_v" do
     # Enumerable ではなくそのまま配列を返す
-    assert { [:a, :b, :c].grep(/b/) == [:b] }
-    assert { [:a, :b, :c].grep_v(/b/) == [:a, :c] }
+    assert { (:a..:c).grep(/b/) == [:b] }
+    assert { (:a..:c).grep_v(/b/) == [:a, :c] }
 
     # ブロック
     a = []
-    [:a, :b, :c].grep(/b/) { |e| a << e }
+    (:a..:c).grep(/b/) { |e| a << e }
     assert { a == [:b] }
   end
 
@@ -210,20 +213,18 @@ class TestEnumerable < Test::Unit::TestCase
   test "slice_when" do
   end
 
-  test "sort" do
-  end
-
-  test "sort_by" do
+  test "sort, sort_by" do
+    assert { [:C, :B, :a].sort == [:B, :C, :a] }
+    assert { [:C, :B, :a].sort { |a, b| a <=> b } == [:B, :C, :a] }
+    assert { [:C, :B, :a].sort_by(&:downcase) == [:a, :B, :C] }
   end
 
   test "sum" do
   end
 
-  test "take_while" do
-  end
-
   test "to_h" do
     assert { [[:a, :b], [:c, :d]].to_h == {:a=>:b, :c=>:d} }
+    assert { [:a, :b].each.with_index.to_h == {:a=>0, :b=>1} }
 
     assert_raise(TypeError) { [:a].to_h }
     assert_raise(TypeError) { [:a, :b].to_h }
@@ -232,6 +233,8 @@ class TestEnumerable < Test::Unit::TestCase
   end
 
   test "uniq" do
+    assert { [:b, :a, :a, :c, :a].uniq == [:b, :a, :c] }
+    assert { [:a, :A].uniq(&:downcase) == [:a] }
   end
 
   test "zip" do
