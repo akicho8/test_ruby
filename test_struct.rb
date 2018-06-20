@@ -82,7 +82,7 @@ class TestStruct < Test::Unit::TestCase
     # ★ キー指定できないのは使いづらい
     assert_raise(TypeError) { s.values_at(:x, :z) }
 
-    # ★ keyword_init を使ってもキーではアクセスできない。これはいけてない。
+    # ★ keyword_init を使ってもキーではアクセスできない。これはいけてない。が、 これを望むなら普通に Hash を使った方がいい。
     s = Struct.new(:x, :y, :z, keyword_init: true).new(x: 1, y: 2, z: 3)
     assert_raise(TypeError) { s.values_at(:x, :z) }
   end
@@ -90,5 +90,15 @@ class TestStruct < Test::Unit::TestCase
   test "to_h" do
     s = Struct.new(:x, :y).new(1, 2)
     assert { s.to_h == {:x => 1, :y => 2} }
+  end
+
+  test "select" do
+    s = Struct.new(:x, :y).new(1, 2)
+    assert { s.select(&:even?) == [2] }
+  end
+
+  test "hash" do
+    s = Struct.new(:x, :y).new(1, 2)
+    assert { s.hash.kind_of?(Integer) == true }
   end
 end

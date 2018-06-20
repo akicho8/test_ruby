@@ -1,5 +1,4 @@
 require "./test_helper"
-
 require "singleton"
 
 class TestSingleton < Test::Unit::TestCase

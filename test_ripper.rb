@@ -1,11 +1,11 @@
 require "./test_helper"
-
 require "ripper"
 
 # https://docs.ruby-lang.org/ja/latest/class/Ripper.html
 class TestRipper < Test::Unit::TestCase
   test "sexp" do
     assert { Ripper.sexp("1 + 2") == [:program, [[:binary, [:@int, "1", [1, 0]], :+, [:@int, "2", [1, 4]]]]] }
+    assert { Ripper.sexp("'あ' + 'い'") == [:program, [[:binary, [:string_literal, [:string_content, [:@tstring_content, "あ", [1, 1]]]], :+, [:string_literal, [:string_content, [:@tstring_content, "い", [1, 9]]]]]]] }
   end
 
   test "lex" do

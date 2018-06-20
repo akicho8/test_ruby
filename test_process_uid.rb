@@ -1,8 +1,7 @@
-
-
 require "./test_helper"
 require "etc"
 
+# https://docs.ruby-lang.org/ja/latest/class/Process.html
 class TestProcessUid < Test::Unit::TestCase
   test "whoami" do
     p Process.uid = 0
