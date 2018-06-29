@@ -1,41 +1,46 @@
 require "./test_helper"
 
 class TestDir < Test::Unit::TestCase
-  TMPDIR = "/tmp/__test_ruby"
+  TMPDIR = File.expand_path("./_tmpdir")
 
   setup do
+    Dir.chdir(__dir__)
     Dir.mkdir(TMPDIR) unless File.exist?(TMPDIR)
-    create_file("#{TMPDIR}/a.txt")
-    create_file("#{TMPDIR}/b.txt")
-    create_file("#{TMPDIR}/x.rb")
-    create_file("#{TMPDIR}/y.rb")
+    Dir.chdir(TMPDIR) do
+      file_create("a.txt")
+      file_create("b.txt")
+      file_create("x.rb")
+      file_create("y.rb")
+    end
   end
 
   teardown do
-    File.delete("#{TMPDIR}/a.txt")
-    File.delete("#{TMPDIR}/b.txt")
-    File.delete("#{TMPDIR}/x.rb")
-    File.delete("#{TMPDIR}/y.rb")
-    Dir.rmdir(TMPDIR)
+    if File.directory?(TMPDIR)
+      Dir.chdir(TMPDIR) do
+        File.delete("a.txt")
+        File.delete("b.txt")
+        File.delete("x.rb")
+        File.delete("y.rb")
+      end
+      Dir.rmdir(TMPDIR)
+    end
   end
 
-  def create_file(filename)
-    open(filename, "w") {|f| f.print "this is #{filename}"}
+  def file_create(filename)
+    File.write(filename, "x")
   end
 
-  def dir_files(path)
-    Dir[path+'/*'].collect{|e| e.sub(path+'/', "")}.sort
-  end
+  test ".glob" do
+    # ★ これバグてってないか？ glob にフルパスを指定すると base が効いてない。
+    files1 = Dir.glob("#{TMPDIR}/*").to_a
+    files2 = Dir.glob("#{TMPDIR}/*", base: TMPDIR).to_a
+    assert { files1 ==  files2 }
 
-  test "setup" do
-    assert_equal(%w(a.txt b.txt x.rb y.rb), dir_files(TMPDIR))
-  end
+    # こっちは動いている
+    files1 = Dir.glob("_tmpdir/*").to_a
+    files2 = Dir.glob("_tmpdir/*", base: TMPDIR).to_a
+    assert { files1 != files2 }
 
-  test "superclass" do
-    assert_equal(Object, Dir.superclass)
-  end
-
-  test "AREF_glob" do
     assert_equal([TMPDIR], Dir[TMPDIR])
     begin
       pwd = Dir.pwd
@@ -48,6 +53,7 @@ class TestDir < Test::Unit::TestCase
       assert_equal(%w(a.txt b.txt), Dir["{a,b}.txt"].sort)
       assert_equal(%w(a.txt b.txt), Dir["?.txt"].sort)
       assert_equal(%w(a.txt b.txt), Dir.glob("?.txt").sort)
+
     ensure
       Dir.chdir(pwd)
       assert_equal(pwd, Dir.pwd)
