@@ -123,8 +123,8 @@ class TestDir < Test::Unit::TestCase
     assert_equal(nil, x.close)
 
     # ブロック指定するのが普通
-    Dir.open(TMPDIR) {|x|
-      assert_instance_of(Dir, x)
+    Dir.open(TMPDIR) {|e|
+      assert_instance_of(Dir, e)
     }
   end
 

@@ -153,7 +153,7 @@ class TestEnumerable < Test::Unit::TestCase
   end
 
   test "grep, grep_v" do
-    # Enumerable ではなくそのまま配列を返す
+    # Enumerable ではなくそのまま配列を返すので注意
     assert { (:a..:c).grep(/b/) == [:b] }
     assert { (:a..:c).grep_v(/b/) == [:a, :c] }
 
@@ -172,6 +172,12 @@ class TestEnumerable < Test::Unit::TestCase
   end
 
   test "inject, reduce" do
+    assert { [1, 2, 3].inject { |a, e| a + e } == 6 }
+    assert { [1, 2, 3].inject(:+) == 6 }
+
+    # ★ 0を期待してnilを返してしまうあるあるコード。この場合初期値 0 を渡すのが重要。いや、sumを使おう
+    assert { [].inject(:+) == nil }
+    assert { [].inject(0, :+) == 0 }
   end
 
   test "lazy" do

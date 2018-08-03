@@ -415,3 +415,12 @@ class TestArray < Test::Unit::TestCase
     assert_equal(2, %w(a b c d e).bsearch_index {|e| e <=> "c"}) # find-any
   end
 end
+# >> Loaded suite -
+# >> Started
+# >> ......................................................
+# >> Finished in 0.004974 seconds.
+# >> -------------------------------------------------------------------------------
+# >> 54 tests, 156 assertions, 0 failures, 0 errors, 0 pendings, 0 omissions, 0 notifications
+# >> 100% passed
+# >> -------------------------------------------------------------------------------
+# >> 10856.45 tests/s, 31363.09 assertions/s
